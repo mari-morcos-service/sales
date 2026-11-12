@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E3A8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sales">
+<meta name="robots" content="noindex, nofollow">
+<title>Sales</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script src="config.js"></script>
+<style>
+:root{--blue:#2563EB;--navy:#1E3A8A;--bg:#F4F6F9;--card:#fff;--ink:#0F172A;--ink2:#334155;--mute:#64748B;--line:#E2E8F0;
+  --soft:#EEF2F7;--prev:#CBD5E1;--up:#16A34A;--dn:#DC2626;--sky:#0EA5E9}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;font-size:14px}
+button,select,input{font:inherit}
+.hidden{display:none!important}
+/* login */
+#login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px 26px;max-width:420px;margin:0 auto;text-align:center}
+.logo{width:76px;height:76px;border-radius:20px;background:linear-gradient(135deg,var(--navy),#3B82F6);margin:0 auto 14px;color:#fff;font-size:36px;line-height:76px;font-weight:800}
+.in{width:100%;background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:13px 14px;font-size:15px;margin-top:12px;outline:none}
+.in:focus{border-color:var(--blue);box-shadow:0 0 0 3px #DBEAFE}
+.btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:13px;font-weight:700;font-size:15px;margin-top:18px;cursor:pointer}
+.btn:disabled{opacity:.6}
+.err{color:var(--dn);margin-top:12px;min-height:20px;font-size:13px}
+.lock{font-size:12px;color:var(--mute);margin-top:18px}
+/* app */
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:calc(env(safe-area-inset-top) + 12px) 14px 10px}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ht{font-size:18px;font-weight:700}.hs{font-size:11.5px;opacity:.85;margin-top:2px}
+.hsel{background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;padding:5px 8px;font-weight:700}
+.hsel option{color:#000}
+.seg{display:flex;background:rgba(255,255,255,.18);border-radius:10px;margin-top:10px;padding:3px;overflow-x:auto}
+.seg button{flex:1;background:none;border:none;color:#fff;font-size:12.5px;padding:6px 8px;border-radius:8px;white-space:nowrap;cursor:pointer}
+.seg button.on{background:#fff;color:var(--navy);font-weight:700}
+main{padding:10px 12px calc(84px + env(safe-area-inset-bottom));max-width:760px;margin:0 auto}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:20;background:#fff;border-top:1px solid var(--line);display:flex;padding:6px 0 calc(8px + env(safe-area-inset-bottom))}
+nav button{flex:1;background:none;border:none;color:#94A3B8;font-size:11px;cursor:pointer}
+nav button b{display:block;font-size:19px;line-height:1.2}
+nav button.on{color:var(--blue);font-weight:700}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.k{background:var(--card);border-radius:12px;padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.k .l{font-size:11.5px;color:var(--mute)}.k .v{font-size:20px;font-weight:800;margin-top:2px;direction:ltr;text-align:right}
+.k .d{font-size:11.5px;margin-top:2px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.card{background:var(--card);border-radius:12px;padding:11px 12px;margin-top:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card .h{font-size:13px;font-weight:700;color:#1E293B;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card .h small{font-weight:400;color:#94A3B8;font-size:11px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:120px;direction:ltr}
+.bars .m{flex:1;display:flex;gap:1px;align-items:flex-end;height:100%;cursor:pointer;border-radius:4px}
+.bars .m.sel{background:#DBEAFE}
+.bars i{flex:1;border-radius:3px 3px 0 0;min-height:1px}.c{background:var(--blue)}.p{background:var(--prev)}
+.ml{display:flex;gap:4px;direction:ltr;font-size:9px;color:#94A3B8;margin-top:3px}.ml span{flex:1;text-align:center}
+.leg{font-size:11px;color:var(--mute);margin-top:6px}.leg b{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:middle;margin:0 4px}
+.hb{display:flex;align-items:center;gap:7px;font-size:12px;padding:5px 2px;color:var(--ink2);cursor:pointer;border-radius:6px}
+.hb.sel{background:#DBEAFE}
+.hb .n{width:40%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb .tr{flex:1;background:var(--soft);border-radius:4px;height:10px;direction:ltr;position:relative}
+.hb .tr i{display:block;height:100%;border-radius:4px;background:#3B82F6}
+.hb .tr i.pv{position:absolute;top:0;left:0;height:4px;background:#94A3B8;border-radius:2px}
+.hb .x{min-width:52px;text-align:left;color:var(--mute);direction:ltr}
+.hb .pc{min-width:38px;text-align:left;color:#94A3B8;font-size:11px;direction:ltr}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 6px}
+.chip{background:#fff;border:1px solid #CBD5E1;border-radius:16px;padding:5px 11px;font-size:12px;color:var(--ink2);cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.on{background:#DBEAFE;border-color:#93C5FD;color:#1D4ED8;font-weight:700}
+.chip.clear{border-style:dashed}
+.mini{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mini select,.mini input{background:#fff;border:1px solid #CBD5E1;border-radius:9px;padding:7px 9px;font-size:13px}
+.pill{display:flex;background:#E2E8F0;border-radius:10px;padding:3px;overflow-x:auto}
+.pill button{flex:1;background:none;border:none;font-size:12.5px;padding:6px 9px;border-radius:8px;white-space:nowrap;color:var(--ink2);cursor:pointer}
+.pill button.on{background:#fff;color:var(--navy);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.out{font-size:11.5px;color:var(--mute);margin-top:8px}
+.status{text-align:center;color:var(--mute);padding:30px 10px}
+.spin{display:inline-block;width:22px;height:22px;border:3px solid #CBD5E1;border-top-color:var(--blue);border-radius:50%;animation:s 0.8s linear infinite;vertical-align:middle}
+@keyframes s{to{transform:rotate(360deg)}}
+.list .it{display:flex;justify-content:space-between;align-items:center;padding:13px 4px;border-bottom:1px solid var(--soft);font-size:14px;color:#1E293B;cursor:pointer}
+.list .it:last-child{border-bottom:none}
+.list .it span{color:#94A3B8;font-size:12px}
+.tw{overflow-x:auto;margin:0 -12px;padding:0 12px}
+table.mt{border-collapse:separate;border-spacing:0;font-size:12px;min-width:100%}
+.mt th,.mt td{padding:6px 7px;border-bottom:1px solid var(--soft);text-align:left;direction:ltr;white-space:nowrap}
+.mt th{color:var(--mute);font-weight:600;font-size:11px;background:#F8FAFC;position:sticky;top:0}
+.mt td:first-child,.mt th:first-child{position:sticky;right:0;background:#fff;text-align:right;direction:rtl;max-width:150px;overflow:hidden;text-overflow:ellipsis;z-index:1;box-shadow:-1px 0 0 var(--soft)}
+.mt th:first-child{background:#F8FAFC;z-index:2}
+.mt tr.pv td{color:#94A3B8;font-size:11px}
+.mt tr.tot td{font-weight:800;background:#F1F5F9}
+.mt tr.tot td:first-child{background:#F1F5F9}
+.mt td.hl{background:#EFF6FF}
+.back{background:none;border:none;color:#fff;font-size:20px;padding:0 4px;cursor:pointer}
+/* sheet */
+.sheetbg{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;max-height:86vh;display:flex;flex-direction:column;padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+.sheet .st{font-weight:800;font-size:15px;margin-bottom:8px}
+.sheet .sb{display:flex;gap:8px;align-items:center;margin-top:8px}
+.sheet .ok{background:var(--blue);color:#fff;border:none;border-radius:10px;padding:9px 20px;font-weight:700;font-size:14px;cursor:pointer}
+.sheet .lnk{background:none;border:none;color:var(--blue);font-size:13px;cursor:pointer}
+.sheet .opts{overflow-y:auto;flex:1;margin-top:8px;border-top:1px solid var(--soft)}
+.opt{display:flex;align-items:center;gap:9px;padding:10px 4px;border-bottom:1px solid var(--soft);font-size:13.5px;cursor:pointer}
+.opt input{width:19px;height:19px;accent-color:var(--blue);flex:none}
+.opt .on{flex:1;overflow:hidden;text-overflow:ellipsis}
+.opt .ov{color:#94A3B8;font-size:11.5px;direction:ltr}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fbtn{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:7px 9px;text-align:right;cursor:pointer;overflow:hidden}
+.fbtn small{display:block;color:var(--mute);font-size:10.5px}
+.fbtn span{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fbtn.on{border-color:#93C5FD;background:#EFF6FF}.fbtn.on span{color:#1D4ED8;font-weight:700}
+.acc{text-align:center;padding:24px 10px}
+.acc .btn{max-width:320px}
+.btn.sec{background:#fff;color:var(--ink2);border:1px solid #CBD5E1}
+/* print (PDF) */
+#print{display:none}
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  body{background:#fff}
+  #app,#login,.sheetbg{display:none!important}
+  #print{display:block}
+  .page{page-break-after:always;break-after:page}
+  .page:last-child{page-break-after:auto;break-after:auto}
+  .card,.k{box-shadow:none;border:1px solid #E2E8F0;break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid var(--navy);padding-bottom:6px;margin-bottom:8px}
+.ph .t{font-size:20px;font-weight:800;color:var(--navy)}.ph .s{font-size:11px;color:var(--mute)}
+.pg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pg2 .card{margin-top:8px}
+#print{font-size:11px}#print .bars{height:95px}#print .hb{padding:2px}#print .card{padding:8px 10px}#print .k .v{font-size:18px}
+.logo.img{background:#121D45 url(icon-512.png) center/cover;color:transparent}
+</style>
+</head>
+<body>
+
+<section id="login" class="hidden">
+  <div class="logo img"></div>
+  <div style="font-size:22px;font-weight:800">Sales</div>
+  <div style="color:var(--mute);font-size:13px;margin-top:4px">تقارير المبيعات</div>
+  <form id="lf" autocomplete="on" style="margin-top:24px">
+    <input class="in" id="lu" name="username" autocomplete="username" placeholder="اسم المستخدم" autocapitalize="none" spellcheck="false" required>
+    <input class="in" id="lp" name="password" type="password" autocomplete="current-password" placeholder="كلمة المرور" required>
+    <button class="btn" id="lb" type="submit">دخول</button>
+  </form>
+  <div class="err" id="le"></div>
+  <div class="lock">🔒 حساب لكل مستخدم · عرض فقط، بدون أي تعديل</div>
+</section>
+
+<section id="app" class="hidden">
+  <header>
+    <div class="hrow">
+      <div style="display:flex;align-items:center;gap:6px;min-width:0">
+        <button class="back hidden" id="back" aria-label="رجوع">→</button>
+        <div style="min-width:0"><div class="ht" id="ht">لوحة المبيعات</div><div class="hs" id="hs"></div></div>
+      </div>
+      <select class="hsel" id="year" aria-label="السنة"></select>
+    </div>
+    <div class="seg" id="scope"></div>
+  </header>
+  <main id="main"></main>
+  <nav>
+    <button data-tab="dash" class="on"><b>▦</b>اللوحة</button>
+    <button data-tab="reports"><b>☰</b>التقارير</button>
+    <button data-tab="pdf"><b>⇩</b>PDF</button>
+    <button data-tab="account"><b>⚙</b>حسابي</button>
+  </nav>
+</section>
+
+<div id="print"></div>
+
+<script>
+"use strict";
+const CFG = window.SALES_CFG || {};
+const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const MS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MODES = {company: {cat: "classification", prod: "collection", catT: "المبيعات حسب التصنيف", prodT: "أعلى 10 موديلات مبيعًا", name: "تصنيف الشركة"},
+               m3: {cat: "m3_type", prod: "m3_group", catT: "المبيعات حسب نوع الصنف (M3)", prodT: "أعلى 10 مجموعات أصناف (M3)", name: "تصنيف M3"}};
+const FNAMES = {market: "المجموعة", customer: "العميل", category: "التصنيف", product: "الموديل / المجموعة", month: "الشهر", make_buy: "تصنيع أو شراء"};
+const RFILTERS = [["market","السوق"],["customer","العميل"],["site","الموقع"],["warehouse","المخزن"],["classification","تصنيف الشركة"],
+                  ["collection","الكوليكشن"],["m3_group","مجموعة M3"],["item","الصنف"]];
+const DIMS = {customer:"العميل", item:"الصنف", classification:"تصنيف الشركة", collection:"الكوليكشن", m3_group:"مجموعة M3",
+              warehouse:"المخزن", site:"الموقع", market:"السوق", company:"الشركة", none:"الإجمالي فقط"};
+
+const store = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}};
+const S = {token: store.get("sales_token"), name: store.get("sales_name") || "", meta: null, scope: null, year: null,
+           tab: "dash", sub: null, mode: "company", f: {},
+           mr: {mode: "compare", quarter: 1, from: null, to: null, measure: "net", dim: "customer", f: {}},
+           rk: {dim: "customer", q: ""}};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function short(v){ if (v == null || isNaN(v)) return "—"; const a = Math.abs(v), s = v < 0 ? "-" : "";
+  if (a >= 1e6) return s + (a/1e6).toFixed(a >= 1e8 ? 0 : 1) + "M"; if (a >= 1e3) return s + (a/1e3).toFixed(a >= 1e5 ? 0 : 1) + "K";
+  return s + Math.round(a).toLocaleString("en-US"); }
+function growth(c, p){ if (c == null || !p) return null; return (c - p) / Math.abs(p) * 100; }
+function gtxt(g){ if (g == null) return ""; return `<span class="${g >= 0 ? "up" : "dn"}">${g >= 0 ? "▲" : "▼"} ${Math.abs(g).toFixed(1)}%</span>`; }
+const sum = (rows, k = "net") => rows.reduce((a, r) => a + (r[k] || 0), 0);
+
+// ---------------------------------------------------------------- server
+async function rpc(fn, args){
+  const r = await fetch(`${CFG.url}/rest/v1/rpc/${fn}`, {method: "POST",
+    headers: {"apikey": CFG.key, "Content-Type": "application/json"}, body: JSON.stringify(args)});
+  let j = null; try { j = await r.json(); } catch (e) {}
+  if (!r.ok){ const msg = (j && (j.message || j.hint)) || ("HTTP " + r.status);
+    if (/SESSION/.test(msg)){ logout(true); throw new Error("انتهت الجلسة، سجّل الدخول مرة أخرى"); }
+    throw new Error(msg); }
+  return j;
+}
+const agg = (yms, filters, group = [], limit = 0, search = null) =>
+  rpc("m_agg", {p_token: S.token, p_yms: yms, p_filters: filters, p_group: group, p_limit: limit, p_search: search});
+const ymsOf = (y, months) => (months || [1,2,3,4,5,6,7,8,9,10,11,12]).map(m => y * 100 + m);
+const scopeF = () => S.scope ? {company: [S.scope]} : {};
+
+// ---------------------------------------------------------------- login
+async function login(ev){
+  ev.preventDefault(); $("#le").textContent = ""; $("#lb").disabled = true;
+  try {
+    const j = await rpc("m_login", {p_user: $("#lu").value, p_pass: $("#lp").value});
+    if (j.error) { $("#le").textContent = j.error === "LOCKED" ? "تم إيقاف الدخول 15 دقيقة بعد عدة محاولات خاطئة" : "اسم المستخدم أو كلمة المرور غير صحيحة"; return; }
+    S.token = j.token; S.name = j.name; store.set("sales_token", j.token); store.set("sales_name", j.name);
+    $("#lp").value = ""; await start();
+  } catch (e) { $("#le").textContent = "تعذّر الاتصال: " + e.message; }
+  finally { $("#lb").disabled = false; }
+}
+function logout(silent){
+  if (!silent && S.token) rpc("m_logout", {p_token: S.token}).catch(() => {});
+  S.token = null; store.set("sales_token", null);
+  $("#app").classList.add("hidden"); $("#login").classList.remove("hidden");
+}
+
+async function start(){
+  $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
+  $("#main").innerHTML = `<div class="status"><span class="spin"></span></div>`;
+  try {
+    const info = await rpc("m_info", {p_token: S.token});
+    S.name = info.user || S.name; const m = info.meta || {};
+    S.meta = {years: JSON.parse(m.years || "[]"), companies: JSON.parse(m.companies || "[]"), at: m.published_at};
+  } catch (e) { if (S.token) $("#main").innerHTML = `<div class="status">${esc(e.message)}</div>`; return; }
+  if (!S.meta.years.length) { $("#main").innerHTML = `<div class="status">لم تُرسل البيانات بعد من البرنامج</div>`; return; }
+  const ys = S.meta.years;
+  if (!ys.includes(S.year)) S.year = ys[0];
+  $("#year").innerHTML = ys.slice(0, Math.max(1, ys.length - 1)).map(y => `<option ${y === S.year ? "selected" : ""}>${y}</option>`).join("");
+  const sc = store.get("sales_scope"); if (sc && S.meta.companies.includes(sc)) S.scope = sc;
+  drawScope(); show();
+}
+function drawScope(){
+  const all = S.meta.companies.length === 2 ? "الشركتان" : "كل الشركات";
+  $("#scope").innerHTML = [[null, all], ...S.meta.companies.map(c => [c, c])]
+    .map(([v, t]) => `<button data-s="${esc(v ?? "")}" class="${(v || null) === S.scope ? "on" : ""}">${esc(t)}</button>`).join("");
+}
+function stamp(){ if (!S.meta || !S.meta.at) return ""; const d = new Date(S.meta.at);
+  return "آخر تحديث " + d.toLocaleString("ar-EG", {day: "numeric", month: "short", hour: "numeric", minute: "2-digit"}); }
+
+// ---------------------------------------------------------------- navigation
+function show(){
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.tab === S.tab));
+  $("#back").classList.toggle("hidden", !S.sub);
+  $("#scope").classList.toggle("hidden", S.tab === "account");
+  $("#year").classList.toggle("hidden", S.tab === "account" || S.sub === "monthly");
+  $("#hs").textContent = stamp();
+  if (S.tab === "dash") { $("#ht").textContent = "لوحة المبيعات"; dash(); }
+  else if (S.tab === "reports") {
+    if (S.sub === "monthly") { $("#ht").textContent = "المبيعات الشهرية"; monthly(); }
+    else if (S.sub === "rank") { $("#ht").textContent = "ترتيب المبيعات"; rank(); }
+    else { $("#ht").textContent = "التقارير"; reportsMenu(); }
+  }
+  else if (S.tab === "pdf") { $("#ht").textContent = "تصدير PDF"; pdfMenu(); }
+  else { $("#ht").textContent = "حسابي"; account(); }
+  window.scrollTo(0, 0);
+}
+let seq = 0;
+function busy(){ $("#main").innerHTML = `<div class="status"><span class="spin"></span></div>`; return ++seq; }
+function fail(e, my){ if (my === seq && S.token) $("#main").innerHTML = `<div class="status">تعذّر التحميل: ${esc(e.message)}<br><br><button class="chip" onclick="show()">إعادة المحاولة</button></div>`; }
+
+// ---------------------------------------------------------------- dashboard (same as the program's «لوحة المبيعات»)
+function dashFilters(f, skip){
+  const md = MODES[S.mode], out = scopeF();
+  for (const [k, v] of Object.entries(f)) {
+    if (k === skip || k === "month") continue;
+    out[k === "category" ? md.cat : k === "product" ? md.prod : k] = [v];
+  }
+  return out;
+}
+async function loadDash(year, f, scope){
+  const md = MODES[S.mode], keepScope = S.scope; S.scope = scope;
+  const mon = f.month ? [f.month] : null, F = sk => dashFilters(f, sk);
+  try {
+    const cur = ymsOf(year, mon), both = [...ymsOf(year, mon), ...ymsOf(year - 1, mon)], cy = ymsOf(year);
+    const [kpi, monthly, market, cust, prod, cat, mb, outside] = await Promise.all([
+      agg(both, F(), ["year"]), agg([...cy, ...ymsOf(year - 1)], F(), ["year", "month"]),
+      agg(cur, F("market"), ["market"]), agg(cur, F("customer"), ["customer"], 5),
+      agg(cur, F("product"), [md.prod]), agg(cur, F("category"), [md.cat]), agg(cur, F("make_buy"), ["make_buy"]),
+      rpc("m_outside", {p_token: S.token, p_years: [year, year - 1], p_companies: scope ? [scope] : null})]);
+    const names = cust.map(r => r.customer);
+    const prevC = names.length ? await agg(ymsOf(year - 1, mon), {...F("customer"), customer: names}, ["customer"]) : [];
+    return {year, f, kpi, monthly, market, cust, prevC, prod, cat, mb, outside, md};
+  } finally { S.scope = keepScope; }
+}
+function dashHtml(d, interactive){
+  const {year, f, md} = d, sel = (k, v) => interactive && f[k] === v ? " sel" : "";
+  const cur = sum(d.kpi.filter(r => r.year === year)), prev = sum(d.kpi.filter(r => r.year === year - 1));
+  const cm = Array(12).fill(0), pm = Array(12).fill(0);
+  d.monthly.forEach(r => (r.year === year ? cm : pm)[r.month - 1] += r.net);
+  const last = cm.reduce((a, v, i) => v ? i : a, -1);
+  const prevSame = f.month ? prev : pm.slice(0, last + 1).reduce((a, b) => a + b, 0);
+  const g = growth(cur, prevSame);
+  const mx = Math.max(...cm, ...pm, 1);
+  let h = `<div class="kpis">
+    <div class="k"><div class="l">مبيعات ${year}</div><div class="v">${short(cur)}</div><div class="d">${g == null ? "" : gtxt(g) + ` <span style="color:var(--mute)">عن نفس الفترة</span>`}</div></div>
+    <div class="k"><div class="l">مبيعات ${year - 1}</div><div class="v">${short(prev)}</div><div class="d" style="color:var(--mute)">${f.month ? MONTHS[f.month - 1] : "السنة كاملة"}</div></div></div>`;
+  h += `<div class="card"><div class="h">المبيعات الشهرية ${interactive ? "<small>اضغط على شهر للتصفية</small>" : ""}</div><div class="bars">` +
+    cm.map((v, i) => `<div class="m${sel("month", i + 1)}" data-f="month" data-v="${i + 1}" title="${MONTHS[i]}: ${short(v)} / ${short(pm[i])}"><i class="p" style="height:${pm[i] / mx * 100}%"></i><i class="c" style="height:${Math.max(v, 0) / mx * 100}%"></i></div>`).join("") +
+    `</div><div class="ml">${MS.map(m => `<span>${m[0]}</span>`).join("")}</div><div class="leg"><b class="c"></b>${year} <b class="p"></b>${year - 1}</div></div>`;
+  const bars = (rows, key, col, title, opts = {}) => {
+    const tot = opts.total ?? sum(rows), mxv = Math.max(...rows.map(r => r.net), 1);
+    return `<div class="card"><div class="h">${title}${opts.note ? `<small>${opts.note}</small>` : ""}</div>` + (rows.length ? rows.map(r => {
+      const v = r[col]; return `<div class="hb${sel(key, v)}" data-f="${key}" data-v="${esc(v)}"><span class="n">${esc(v)}</span><span class="tr"><i style="width:${Math.max(r.net, 0) / mxv * 100}%${opts.color ? ";background:" + opts.color : ""}"></i>${r.pv != null ? `<i class="pv" style="width:${Math.max(r.pv, 0) / mxv * 100}%"></i>` : ""}</span><span class="x">${short(r.net)}</span>${opts.pct ? `<span class="pc">${tot ? (r.net / tot * 100).toFixed(1) + "%" : ""}</span>` : ""}</div>`; }).join("") : `<div class="out">لا توجد مبيعات</div>`) + `</div>`;
+  };
+  const pc = Object.fromEntries(d.prevC.map(r => [r.customer, r.net]));
+  const head = h; h = "";
+  h += bars(d.market.filter(r => r.net > 0), "market", "market", `مبيعات ${year} حسب المجموعة`, {pct: true});
+  h += bars(d.cust.map(r => ({...r, pv: pc[r.customer] || 0})), "customer", "customer", `أعلى العملاء ${year}`, {color: "var(--sky)", note: `الخط الرمادي = ${year - 1}`});
+  h += bars(d.cat, "category", md.cat, md.catT, {pct: true});
+  h += bars(d.prod.slice(0, 10), "product", md.prod, md.prodT, {pct: true, total: sum(d.prod), color: "#6366F1"});
+  if (d.mb.length > 1 || (d.mb[0] && d.mb[0].make_buy !== "غير محدد")) h += bars(d.mb, "make_buy", "make_buy", "تصنيع أو شراء", {pct: true, color: "#14B8A6"});
+  const out = [["asset", "بيع أصول ثابتة"], ["other_rev", "إيرادات أخرى"]].map(([k, t]) => {
+    const v = sum(d.outside.filter(r => r.kind === k && r.year === year)); return v ? `${t} ${short(v)}` : ""; }).filter(Boolean);
+  h = interactive ? head + h : head + `<div class="pg2">${h}</div>`;     // the PDF page: two columns, one A4 page
+  if (out.length) h += `<div class="out">خارج المبيعات (لا تدخل في الإجمالي): ${out.join(" · ")}</div>`;
+  return h;
+}
+async function dash(){
+  const my = busy();
+  try {
+    const d = await loadDash(S.year, S.f, S.scope); if (my !== seq) return;
+    const chips = Object.entries(S.f).map(([k, v]) => `<button class="chip on" data-x="${k}">${FNAMES[k]}: ${esc(k === "month" ? MONTHS[v - 1] : v)} ✕</button>`).join("");
+    $("#main").innerHTML = `<div class="pill" id="mode">${Object.entries(MODES).map(([k, m]) => `<button data-m="${k}" class="${k === S.mode ? "on" : ""}">${m.name}</button>`).join("")}</div>
+      ${chips ? `<div class="chips" style="margin-top:8px">${chips}<button class="chip clear" data-x="*">إلغاء التصفية</button></div>` : ""}
+      <div style="margin-top:8px">${dashHtml(d, true)}</div>`;
+  } catch (e) { fail(e, my); }
+}
+
+// ---------------------------------------------------------------- reports
+function reportsMenu(){
+  $("#main").innerHTML = `<div class="card"><div class="list">
+    <div class="it" data-go="monthly"><div>المبيعات الشهرية<br><small style="color:var(--mute)">شهر بشهر، مقارنة بالسنة السابقة، بفلاتر متتالية</small></div><span>‹</span></div>
+    <div class="it" data-go="rank" data-dim="customer">المبيعات حسب العميل <span>‹</span></div>
+    <div class="it" data-go="rank" data-dim="item">المبيعات حسب الصنف <span>‹</span></div>
+    <div class="it" data-go="rank" data-dim="classification">المبيعات حسب التصنيف <span>‹</span></div>
+    <div class="it" data-go="rank" data-dim="collection">المبيعات حسب الكوليكشن <span>‹</span></div>
+    <div class="it" data-go="rank" data-dim="m3_group">المبيعات حسب مجموعة M3 <span>‹</span></div>
+    <div class="it" data-go="rank" data-dim="warehouse">المبيعات حسب المخزن <span>‹</span></div>
+  </div></div><div class="out" style="text-align:center">${stamp()}</div>`;
+}
+
+// ranking: this year vs last year per customer / item / …
+async function rank(){
+  const R = S.rk, my = busy(), y = S.year;
+  try {
+    const top = await agg(ymsOf(y), scopeF(), [R.dim], 200, R.q || null); if (my !== seq) return;
+    const keys = top.map(r => r[R.dim]);
+    const prev = keys.length ? await agg(ymsOf(y - 1), {...scopeF(), [R.dim]: keys}, [R.dim]) : [];
+    const tot = await agg(ymsOf(y), scopeF());
+    if (my !== seq) return;
+    const pv = Object.fromEntries(prev.map(r => [r[R.dim], r.net])), all = tot[0].net;
+    $("#main").innerHTML = `<div class="mini"><select id="rkdim">${Object.entries(DIMS).filter(([k]) => !["none", "company", "site", "market"].includes(k))
+        .map(([k, t]) => `<option value="${k}" ${k === R.dim ? "selected" : ""}>${t}</option>`).join("")}</select>
+      <input id="rkq" placeholder="بحث…" value="${esc(R.q)}" style="flex:1;min-width:120px"></div>
+      <div class="card"><div class="h">${DIMS[R.dim]} — ${y} مقابل ${y - 1}<small>إجمالي ${y}: ${short(all)}</small></div>
+      <div class="tw"><table class="mt"><tr><th>#  ${DIMS[R.dim]}</th><th>${y}</th><th>${y - 1}</th><th>النمو</th><th>النسبة</th></tr>
+      ${top.map((r, i) => { const p = pv[r[R.dim]]; const g = growth(r.net, p);
+        return `<tr><td title="${esc(r[R.dim])}">${i + 1}. ${esc(r[R.dim])}</td><td>${short(r.net)}</td><td>${short(p)}</td><td>${g == null ? "" : gtxt(g)}</td><td>${all ? (r.net / all * 100).toFixed(1) + "%" : ""}</td></tr>`; }).join("")}
+      </table></div>${top.length >= 200 ? `<div class="out">أول 200 — استخدم البحث للباقي</div>` : ""}${!top.length ? `<div class="out">لا توجد نتائج</div>` : ""}</div>`;
+  } catch (e) { fail(e, my); }
+}
+
+// «المبيعات الشهرية»
+function mrPeriod(){
+  const R = S.mr, y = S.year;
+  let months = [];
+  if (R.mode === "quarter") months = [1, 2, 3].map(i => [y, (R.quarter - 1) * 3 + i]);
+  else if (R.mode === "custom") {
+    const a = R.from || (y * 100 + 1), b = R.to || (y * 100 + 12), [s, e] = a <= b ? [a, b] : [b, a];
+    for (let k = s; k <= e; k = (k % 100 === 12) ? (Math.floor(k / 100) + 1) * 100 + 1 : k + 1) months.push([Math.floor(k / 100), k % 100]);
+  } else months = Array.from({length: 12}, (_, i) => [y, i + 1]);
+  const compare = R.mode !== "year", oneYear = new Set(months.map(m => m[0])).size === 1;
+  return {months, compare, cur: months.map(([a, b]) => a * 100 + b), prev: months.map(([a, b]) => (a - 1) * 100 + b),
+          labels: months.map(([a, b]) => oneYear ? MS[b - 1] : `${MS[b - 1]} ${String(a % 100).padStart(2, "0")}`),
+          title: R.mode === "year" ? `${y}` : R.mode === "custom" ? `${months[0][0]}/${months[0][1]} → ${months.at(-1)[0]}/${months.at(-1)[1]}` : R.mode === "quarter" ? `Q${R.quarter} ${y} / ${y - 1}` : `${y} / ${y - 1}`};
+}
+function mrFilters(upto){
+  const out = scopeF(), R = S.mr;
+  RFILTERS.forEach(([k], i) => { if ((upto == null || i < upto) && R.f[k] && R.f[k].length) out[k] = R.f[k]; });
+  return out;
+}
+async function monthly(){
+  const R = S.mr, P = mrPeriod(), my = busy(), meas = R.measure, dim = R.dim;
+  const ym = (s) => { const y = S.meta.years; return y.flatMap(a => Array.from({length: 12}, (_, i) => a * 100 + i + 1)).sort((x, z) => x - z); };
+  const ymSel = (v, id) => `<select id="${id}">${ym().map(k => `<option value="${k}" ${k === v ? "selected" : ""}>${MS[k % 100 - 1]} ${Math.floor(k / 100)}</option>`).join("")}</select>`;
+  try {
+    const F = mrFilters(), yms = [...P.cur, ...(P.compare ? P.prev : [])];
+    let keys = [];
+    if (dim !== "none") { const t = await agg(P.cur, F, [dim], 100); keys = t.map(r => r[dim]); }
+    const [rows, tots] = await Promise.all([
+      dim !== "none" && keys.length ? agg(yms, {...F, [dim]: keys}, [dim, "year", "month"]) : Promise.resolve([]),
+      agg(yms, F, ["year", "month"])]);
+    if (my !== seq) return;
+    const idx = Object.fromEntries(P.cur.map((k, i) => [k, i])), pidx = Object.fromEntries(P.prev.map((k, i) => [k, i]));
+    const n = P.cur.length, blank = () => ({c: Array(n).fill(null), p: Array(n).fill(null)});
+    const put = (o, r) => { const k = r.year * 100 + r.month, v = r[meas];
+      if (k in idx) o.c[idx[k]] = (o.c[idx[k]] || 0) + v; else if (P.compare && k in pidx) o.p[pidx[k]] = (o.p[pidx[k]] || 0) + v; };
+    const by = {}; keys.forEach(k => by[k] = blank()); rows.forEach(r => put(by[r[dim]] || (by[r[dim]] = blank()), r));
+    const T = blank(); tots.forEach(r => put(T, r));
+    const tsum = a => a.some(v => v != null) ? a.reduce((x, v) => x + (v || 0), 0) : null;
+    const fmt = v => v == null ? "—" : meas === "qty" ? Math.round(v).toLocaleString("en-US") : short(v);
+    const tr = (label, a, cls, extra = "") => `<tr class="${cls}"><td title="${esc(label)}">${esc(label)}</td>${a.map(v => `<td>${fmt(v)}</td>`).join("")}<td><b>${fmt(tsum(a))}</b></td>${P.compare ? `<td>${extra}</td>` : ""}</tr>`;
+    let body = "";
+    for (const k of keys) { const o = by[k];
+      body += tr(k, o.c, "");
+      if (P.compare) body += tr(String(S.year - 1), o.p, "pv", gtxt(growth(tsum(o.c), tsum(o.p)))); }
+    const ct = tsum(T.c), pt = tsum(T.p), g = growth(ct, pt);
+    body += tr("الإجمالي", T.c, "tot") + (P.compare ? tr("الإجمالي السابق", T.p, "tot pv", gtxt(g)) : "");
+    const fb = RFILTERS.map(([k, t], i) => { const v = R.f[k] || [];
+      return `<button class="fbtn ${v.length ? "on" : ""}" data-pick="${i}"><small>${i + 1}. ${t}</small><span>${v.length === 0 ? "الكل" : v.length === 1 ? esc(v[0]) : v.length + " مختارة"}</span></button>`; }).join("");
+    $("#main").innerHTML = `
+      <div class="pill" id="mrmode">${[["year","سنة"],["compare","مقابل السابقة"],["quarter","ربع"],["custom","فترة"]].map(([k, t]) => `<button data-mm="${k}" class="${R.mode === k ? "on" : ""}">${t}</button>`).join("")}</div>
+      <div class="mini" style="margin-top:8px">
+        ${R.mode !== "custom" ? `<select id="mry">${S.meta.years.slice(0, Math.max(1, S.meta.years.length - (R.mode === "year" ? 0 : 1))).map(y => `<option ${y === S.year ? "selected" : ""}>${y}</option>`).join("")}</select>` : ""}
+        ${R.mode === "quarter" ? `<select id="mrq">${[1,2,3,4].map(q => `<option value="${q}" ${q === R.quarter ? "selected" : ""}>Q${q}</option>`).join("")}</select>` : ""}
+        ${R.mode === "custom" ? `من ${ymSel(R.from || S.year * 100 + 1, "mrf")} إلى ${ymSel(R.to || S.year * 100 + 12, "mrt")}` : ""}
+        <select id="mrdim">${Object.entries(DIMS).map(([k, t]) => `<option value="${k}" ${k === dim ? "selected" : ""}>الصفوف: ${t}</option>`).join("")}</select>
+        <select id="mrmeas"><option value="net" ${meas === "net" ? "selected" : ""}>صافي المبيعات</option><option value="qty" ${meas === "qty" ? "selected" : ""}>الكمية</option></select>
+      </div>
+      <div class="card"><div class="h">الفلاتر <small>كل فلتر يعرض ما تبقّى بعد الفلاتر التي قبله</small></div><div class="fgrid">${fb}</div>
+        ${Object.values(R.f).some(v => v && v.length) ? `<div style="margin-top:8px"><button class="chip clear" id="mrclear">إلغاء الفلاتر</button></div>` : ""}</div>
+      <div class="kpis" style="margin-top:10px"><div class="k"><div class="l">${P.title}</div><div class="v">${fmt(ct)}</div><div class="d">${P.compare ? gtxt(g) + ` <span style="color:var(--mute)">السابق ${fmt(pt)}</span>` : ""}</div></div>
+        <div class="k"><div class="l">${dim === "none" ? "الصفوف" : DIMS[dim]}</div><div class="v">${dim === "none" ? "—" : keys.length + (keys.length >= 100 ? "+" : "")}</div><div class="d" style="color:var(--mute)">${keys.length >= 100 ? "أعلى 100" : ""}</div></div></div>
+      <div class="card"><div class="tw"><table class="mt"><tr><th>${dim === "none" ? "" : DIMS[dim]}</th>${P.labels.map(l => `<th>${l}</th>`).join("")}<th>الإجمالي</th>${P.compare ? "<th>النمو</th>" : ""}</tr>${body}</table></div></div>`;
+  } catch (e) { fail(e, my); }
+}
+
+// one chained filter: a list with search and check boxes («تم ✓» applies; tapping outside applies too)
+async function pickFilter(i){
+  const [key, title] = RFILTERS[i], R = S.mr, P = mrPeriod(), chosen = new Set(R.f[key] || []);
+  const bg = document.createElement("div"); bg.className = "sheetbg";
+  bg.innerHTML = `<div class="sheet"><div class="st">${i + 1}. ${title}</div>
+    <input class="in" id="fq" placeholder="بحث…" style="margin-top:0">
+    <div class="sb"><button class="ok" id="fok">تم ✓</button><span style="flex:1"></span><button class="lnk" id="fall">تحديد الظاهر</button><button class="lnk" id="fnone">مسح</button></div>
+    <div class="opts" id="fo"><div class="status"><span class="spin"></span></div></div></div>`;
+  document.body.appendChild(bg);
+  let items = [], t = null;
+  const draw = () => { $("#fo").innerHTML = items.length ? items.map((r, j) => `<label class="opt"><input type="checkbox" data-j="${j}" ${chosen.has(r[key]) ? "checked" : ""}><span class="on">${esc(r[key])}</span><span class="ov">${short(r.net)}</span></label>`).join("")
+    + (items.length >= 300 ? `<div class="out">أول 300 — اكتب في البحث للباقي</div>` : "") : `<div class="status">لا توجد قيم</div>`; };
+  const load = async q => { try { items = await agg(P.cur, mrFilters(i), [key], 300, q || null);
+    [...chosen].forEach(v => { if (!items.some(r => r[key] === v)) items.unshift({[key]: v, net: null}); }); draw(); } catch (e) { $("#fo").innerHTML = `<div class="status">${esc(e.message)}</div>`; } };
+  const done = () => { bg.remove(); const v = [...chosen]; const before = (R.f[key] || []).join("\u0001");
+    if (v.join("\u0001") === before) return;
+    R.f[key] = v; RFILTERS.slice(i + 1).forEach(([k]) => { if (R.f[k] && R.f[k].length) R.f[k] = R.f[k]; }); monthly(); };
+  bg.addEventListener("click", e => { if (e.target === bg) done(); });
+  $("#fok").onclick = done;
+  $("#fall").onclick = () => { items.forEach(r => chosen.add(r[key])); draw(); };
+  $("#fnone").onclick = () => { chosen.clear(); draw(); };
+  $("#fo").addEventListener("change", e => { const r = items[+e.target.dataset.j]; if (!r) return; e.target.checked ? chosen.add(r[key]) : chosen.delete(r[key]); });
+  $("#fq").addEventListener("input", e => { clearTimeout(t); t = setTimeout(() => load(e.target.value.trim()), 300); });
+  load("");
+}
+
+// ---------------------------------------------------------------- PDF: one page per board (both companies, then each)
+function pdfMenu(){
+  const all = S.meta.companies.length === 2 ? "الشركتان معًا" : "كل الشركات معًا";
+  $("#main").innerHTML = `<div class="card"><div class="h">لوحة المبيعات ${S.year} — كل لوحة في صفحة</div>
+    <label class="opt"><input type="checkbox" data-pdf="" checked><span class="on">${all}</span></label>
+    ${S.meta.companies.map(c => `<label class="opt"><input type="checkbox" data-pdf="${esc(c)}" checked><span class="on">${esc(c)}</span></label>`).join("")}
+    <div class="out">التصنيف: ${MODES[S.mode].name} · بدون فلاتر</div>
+    <button class="btn" id="pdfgo">تجهيز PDF</button>
+    <div class="out">في الصفحة التالية اختر «حفظ كـ PDF» أو شارك الملف مباشرة.</div></div>`;
+}
+async function makePdf(){
+  const scopes = [...document.querySelectorAll("[data-pdf]")].filter(x => x.checked).map(x => x.dataset.pdf || null);
+  if (!scopes.length) return;
+  const btn = $("#pdfgo"); btn.disabled = true; btn.textContent = "جارٍ التجهيز…";
+  try {
+    const all = S.meta.companies.length === 2 ? "الشركتان" : "كل الشركات";
+    const ds = await Promise.all(scopes.map(s => loadDash(S.year, {}, s)));
+    $("#print").innerHTML = ds.map((d, i) => `<div class="page"><div class="ph"><div class="t">لوحة المبيعات — ${esc(scopes[i] || all)} — ${S.year}</div><div class="s">${stamp()}</div></div>${dashHtml(d, false)}</div>`).join("");
+    document.title = `Sales dashboard ${S.year}`;
+    setTimeout(() => { window.print(); document.title = "Sales"; }, 300);
+  } catch (e) { alert("تعذّر التجهيز: " + e.message); }
+  finally { btn.disabled = false; btn.textContent = "تجهيز PDF"; }
+}
+
+// ---------------------------------------------------------------- account
+function account(){
+  $("#main").innerHTML = `<div class="card acc"><div class="logo" style="width:60px;height:60px;line-height:60px;font-size:28px">${esc((S.name || "S")[0])}</div>
+    <div style="font-size:17px;font-weight:800">${esc(S.name)}</div><div class="out">${stamp()}</div>
+    <div class="out">الأرقام تُرسل من البرنامج تلقائيًا كل 30 دقيقة عند وجود جديد.</div>
+    <button class="btn sec" id="reload">تحديث الصفحة</button><button class="btn" id="out" style="background:var(--dn)">تسجيل الخروج</button></div>`;
+}
+
+// ---------------------------------------------------------------- events
+$("#lf").addEventListener("submit", login);
+document.querySelector("nav").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; S.tab = b.dataset.tab; S.sub = null; show(); });
+$("#back").onclick = () => { S.sub = null; show(); };
+$("#year").onchange = e => { S.year = +e.target.value; show(); };
+$("#scope").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return;
+  S.scope = b.dataset.s || null; store.set("sales_scope", S.scope); S.f = {}; drawScope(); show(); });
+$("#main").addEventListener("click", e => {
+  const t = e.target;
+  const f = t.closest("[data-f]");
+  if (f && S.tab === "dash") { const k = f.dataset.f, v = k === "month" ? +f.dataset.v : f.dataset.v;
+    if (S.f[k] === v) delete S.f[k]; else S.f[k] = v; dash(); return; }
+  const x = t.closest("[data-x]"); if (x) { if (x.dataset.x === "*") S.f = {}; else delete S.f[x.dataset.x]; dash(); return; }
+  const m = t.closest("[data-m]"); if (m) { S.mode = m.dataset.m; delete S.f.category; delete S.f.product; dash(); return; }
+  const go = t.closest("[data-go]"); if (go) { S.sub = go.dataset.go; if (go.dataset.dim) { S.rk.dim = go.dataset.dim; S.rk.q = ""; } show(); return; }
+  const mm = t.closest("[data-mm]"); if (mm) { S.mr.mode = mm.dataset.mm; if (S.mr.mode !== "year" && S.year === S.meta.years.at(-1) && S.meta.years.length > 1) S.year = S.meta.years.at(-2); monthly(); return; }
+  const pk = t.closest("[data-pick]"); if (pk) { pickFilter(+pk.dataset.pick); return; }
+  if (t.id === "mrclear") { S.mr.f = {}; monthly(); return; }
+  if (t.id === "pdfgo") { makePdf(); return; }
+  if (t.id === "reload") { location.reload(); return; }
+  if (t.id === "out") { logout(); return; }
+});
+$("#main").addEventListener("change", e => {
+  const t = e.target, R = S.mr;
+  if (t.id === "mry") { S.year = +t.value; $("#year").value = S.year; monthly(); }
+  else if (t.id === "mrq") { R.quarter = +t.value; monthly(); }
+  else if (t.id === "mrf") { R.from = +t.value; monthly(); }
+  else if (t.id === "mrt") { R.to = +t.value; monthly(); }
+  else if (t.id === "mrdim") { R.dim = t.value; monthly(); }
+  else if (t.id === "mrmeas") { R.measure = t.value; monthly(); }
+  else if (t.id === "rkdim") { S.rk.dim = t.value; S.rk.q = ""; rank(); }
+});
+let rkT = null;
+$("#main").addEventListener("input", e => { if (e.target.id === "rkq") { clearTimeout(rkT); const v = e.target.value;
+  rkT = setTimeout(() => { S.rk.q = v.trim(); rank().then(() => { const q = $("#rkq"); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }); }, 400); } });
+
+if (!CFG.url || !CFG.key) document.body.innerHTML = `<div class="status">الإعداد غير مكتمل (config.js)</div>`;
+else if (S.token) start(); else $("#login").classList.remove("hidden");
+</script>
+</body>
+</html>
